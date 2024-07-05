@@ -1,8 +1,12 @@
+import { motion } from "framer-motion";
 import type { Module } from "../types/module";
 
 export const ModuleCard: React.FC<Module> = (props) => {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      transition={{ type: "tween", bounce: 0, duration: 0.5 }}
+      animate={{ opacity: [0,1] }}
       className={`${
         props.available ? "border-emerald-500" : "border-red-500"
       } relative module-card-${
@@ -20,6 +24,6 @@ export const ModuleCard: React.FC<Module> = (props) => {
       >
         {!props.available && "Not"} Available
       </p>
-    </div>
+    </motion.div>
   );
 };

@@ -36,6 +36,7 @@
 }
 
 .title::after {
+  transform-origin: left;
   content: "";
   display: block;
   position: absolute;
@@ -43,4 +44,15 @@
   height: 2px;
   margin-top: 0.5rem;
   background: linear-gradient(90deg, #ffffff, #ffffff00);
+  animation: titleAppear 250ms;
+}
+
+@keyframes titleAppear {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
 }

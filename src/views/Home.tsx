@@ -20,7 +20,7 @@ export function Home() {
   return (
     <div className="w-full min-h-full overflow-y-auto p-6">
       <h1 className="relative title text-white text-4xl">Modules</h1>
-      <div className="w-full h-auto text-white mt-8 flex flex-col gap-4">
+      <div className="overflow-hidden w-full h-auto text-white mt-8 flex flex-col gap-4">
         {modules.map((item) => (
           <ModuleCard {...item} />
         ))}
