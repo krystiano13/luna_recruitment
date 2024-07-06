@@ -28,7 +28,35 @@ export function Module() {
     }
   }, []);
 
-  return <>
-    <h1 className="text-white">{ module?.name }</h1>
-  </>;
+  return (
+    <>
+      <div className="w-full min-h-full overflow-y-auto p-6 md:p-12">
+        <h1 className="relative title text-white text-4xl">
+          {module ? module.name : "Module Not Found"}
+        </h1>
+        <div
+          className={`${
+            module?.available ? "border-emerald-500" : "border-red-500"
+          } mt-8 p-2 relative w-auto flex flex-col items-start justify-center rounded-lg border-solid border-2 border-b-[5px]`}
+        >
+          <p className="p-1.5 pl-2 text-white text-lg font-light max-w-full md:max-w-[50%]">
+            <span className="font-medium">Description:</span> {module?.description}
+          </p>
+          <p
+            className={`${
+              module?.available ? "text-emerald-500" : "text-red-500"
+            } font-medium p-1.5 pl-2`}
+          >
+            {!module?.available && "Not"} Available
+          </p>
+          <p className="font-light text-white p-1.5 pl-2">
+            Target Temparature:{" "}
+            <span className="font-semibold">
+              {module?.targetTemperature} °C
+            </span>
+          </p>
+        </div>
+      </div>
+    </>
+  );
 }
