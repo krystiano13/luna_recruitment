@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import type { Module } from "../types/module";
 
 export function Module() {
@@ -36,7 +37,10 @@ export function Module() {
         <h1 className="relative title text-white text-4xl">
           {module ? module.name : "Module Not Found"}
         </h1>
-        <div
+        <motion.div
+          initial={{ opacity: 0 }}
+          transition={{ type: "tween", bounce: 0, duration: 0.5 }}
+          animate={{ opacity: [0, 1] }}
           className={`${
             module?.available ? "border-emerald-500" : "border-red-500"
           } mt-8 p-2 relative w-auto flex flex-col items-start justify-center rounded-lg border-solid border-2 border-b-[5px]`}
@@ -69,7 +73,7 @@ export function Module() {
               Go Back
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
