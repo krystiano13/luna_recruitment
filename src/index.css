@@ -47,6 +47,13 @@
   animation: titleAppear 250ms;
 }
 
+.op-transition { animation: opacityTransition 250ms; }
+
+@keyframes opacityTransition {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes titleAppear {
     from {
         transform: scaleX(0);
