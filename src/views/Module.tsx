@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import type { Module } from "../types/module";
 
 export function Module() {
   const [params, setParams] = useSearchParams();
   const [notFound, setNotFound] = useState<boolean>(false);
   const [module, setModule] = useState<Module | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!params.get("id")) {
@@ -60,7 +62,10 @@ export function Module() {
             <button className="hover:text-white hover:bg-emerald-500 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg text-emerald-500 cursor-pointer bg-transparent">
               Edit
             </button>
-            <button className="hover:bg-emerald-600 hover:border-emerald-600 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg cursor-pointer bg-emerald-500">
+            <button
+              onClick={() => navigate("/")}
+              className="hover:bg-emerald-600 hover:border-emerald-600 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg cursor-pointer bg-emerald-500"
+            >
               Go Back
             </button>
           </div>
