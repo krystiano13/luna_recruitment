@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./views/Home";
+import { Module } from "./views/Module";
 
 export function App() {
   return (
@@ -7,6 +8,7 @@ export function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/module" element={<Module />}/>
         </Routes>
       </BrowserRouter>
     </div>

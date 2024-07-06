@@ -6,16 +6,16 @@ export const ModuleCard: React.FC<Module> = (props) => {
     <motion.div
       initial={{ opacity: 0 }}
       transition={{ type: "tween", bounce: 0, duration: 0.5 }}
-      animate={{ opacity: [0,1] }}
+      animate={{ opacity: [0, 1] }}
       className={`${
         props.available ? "border-emerald-500" : "border-red-500"
       } relative module-card-${
         props.available ? "green" : "red"
-      } flex flex-col justify-center rounded-lg border-solid border-2 border-b-4 cursor-pointer`}
+      } flex flex-col justify-center rounded-lg border-solid border-2 border-b-[5px] cursor-pointer`}
     >
       <h2 className="text-lg p-1.5 pl-2">{props.name}</h2>
       <p className="font-light p-1.5 pl-2">
-        Target Temparature: {props.targetTemperature} °C
+        Target Temparature: <span className="font-semibold">{props.targetTemperature} °C</span>
       </p>
       <p
         className={`${
