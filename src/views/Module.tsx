@@ -5,28 +5,24 @@ import type { Module } from "../types/module";
 
 export function Module() {
   const [params, setParams] = useSearchParams();
-  const [notFound, setNotFound] = useState<boolean>(false);
   const [module, setModule] = useState<Module | null>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!params.get("id")) {
-      setNotFound(true);
-      setModule(null);
+      navigate("/404");
     } else {
       fetch(`http://localhost:3001/modules/${params.get("id")}`)
         .then((res) => {
           if (res.status === 404) {
-            setNotFound(true);
             setModule(null);
+            navigate("/404");
           }
           return res.json();
         })
         .then((data) => {
-          if (!notFound) {
-            setModule(data);
-          }
+          setModule(data);
         });
     }
   }, []);
@@ -34,9 +30,7 @@ export function Module() {
   return (
     <>
       <div className="w-full min-h-full overflow-y-auto p-6 md:p-12">
-        <h1 className="relative title text-white text-4xl">
-          {module ? module.name : "Module Not Found"}
-        </h1>
+        <h1 className="relative title text-white text-4xl">{module?.name}</h1>
         <motion.div
           initial={{ opacity: 0 }}
           transition={{ type: "tween", bounce: 0, duration: 0.5 }}
@@ -49,6 +43,12 @@ export function Module() {
             <span className="font-medium">Description:</span>{" "}
             {module?.description}
           </p>
+          <p className="font-light text-white p-1.5 pl-2">
+            Target Temparature:{" "}
+            <span className="font-semibold">
+              {module?.targetTemperature} °C
+            </span>
+          </p>
           <p
             className={`${
               module?.available ? "text-emerald-500" : "text-red-500"
@@ -56,19 +56,23 @@ export function Module() {
           >
             {!module?.available && "Not"} Available
           </p>
-          <p className="font-light text-white p-1.5 pl-2">
-            Target Temparature:{" "}
-            <span className="font-semibold">
-              {module?.targetTemperature} °C
-            </span>
-          </p>
           <div className="flex items-center gap-3 p-1.5 pl-2 text-white">
-            <button className="hover:text-white hover:bg-emerald-500 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg text-emerald-500 cursor-pointer bg-transparent">
-              Edit
-            </button>
+            {module?.available && (
+              <button className="hover:text-white hover:bg-emerald-500 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg text-emerald-500 cursor-pointer bg-transparent">
+                Edit
+              </button>
+            )}
             <button
               onClick={() => navigate("/")}
-              className="hover:bg-emerald-600 hover:border-emerald-600 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg cursor-pointer bg-emerald-500"
+              className={`${
+                module?.available
+                  ? "hover:bg-emerald-600 hover:border-emerald-600"
+                  : "hover:bg-red-600 hover:border-red-600"
+              } transition border-2 border-solid ${
+                module?.available
+                  ? "bg-emerald-500 border-emerald-500"
+                  : "bg-red-500 border-red-500"
+              } p-1.5 pl-6 pr-6 rounded-lg cursor-pointer `}
             >
               Go Back
             </button>

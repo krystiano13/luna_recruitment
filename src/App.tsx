@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home } from "./views/Home";
+import { NotFound } from "./views/404";
 import { Module } from "./views/Module";
 
 export function App() {
@@ -9,6 +10,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/module" element={<Module />}/>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </div>
