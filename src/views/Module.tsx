@@ -40,7 +40,8 @@ export function Module() {
           } mt-8 p-2 relative w-auto flex flex-col items-start justify-center rounded-lg border-solid border-2 border-b-[5px]`}
         >
           <p className="p-1.5 pl-2 text-white text-lg font-light max-w-full md:max-w-[50%]">
-            <span className="font-medium">Description:</span> {module?.description}
+            <span className="font-medium">Description:</span>{" "}
+            {module?.description}
           </p>
           <p
             className={`${
@@ -55,6 +56,14 @@ export function Module() {
               {module?.targetTemperature} °C
             </span>
           </p>
+          <div className="flex items-center gap-3 p-1.5 pl-2 text-white">
+            <button className="hover:text-white hover:bg-emerald-500 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg text-emerald-500 cursor-pointer bg-transparent">
+              Edit
+            </button>
+            <button className="hover:bg-emerald-600 hover:border-emerald-600 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg cursor-pointer bg-emerald-500">
+              Go Back
+            </button>
+          </div>
         </div>
       </div>
     </>
