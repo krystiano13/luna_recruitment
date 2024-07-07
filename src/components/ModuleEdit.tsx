@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import React, { useState } from "react";
 import type { Module } from "../types/module";
 
 interface Props {
   module: Module | null;
   close: () => void;
+  update: (module: Module) => void;
 }
 
 const divVariant = {
@@ -19,6 +20,33 @@ const formVariant = {
 
 export const ModuleEdit: React.FC<Props> = (props) => {
   const [isModalClose, setIsModalClose] = useState<boolean>(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+
+    await fetch(`http://localhost:3001/modules/${props.module?.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+      },
+      mode: "cors",
+      body: JSON.stringify({
+        name: formData.get("name"),
+        description: formData.get("description"),
+        targetTemperature: formData.get("targetTemperature"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setIsModalClose(true);
+        props.update(data);
+        setTimeout(() => {
+          props.close();
+        }, 250);
+      });
+  }
+
   return (
     <motion.div
       initial={isModalClose ? { opacity: 1 } : { opacity: 0 }}
@@ -28,6 +56,7 @@ export const ModuleEdit: React.FC<Props> = (props) => {
       className="w-[100vw] h-[100vh] flex justify-center items-center bg-slate-950 z-50 fixed bg-opacity-75"
     >
       <motion.form
+        onSubmit={handleSubmit}
         initial={isModalClose ? { scale: 1 } : { scale: 0 }}
         transition={{
           type: "spring",

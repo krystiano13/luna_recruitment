@@ -32,7 +32,11 @@ export function Module() {
   return (
     <>
       {modal && module && (
-        <ModuleEdit module={module} close={() => setModal(false)} />
+        <ModuleEdit
+          module={module}
+          update={(module: Module) => setModule(module)}
+          close={() => setModal(false)}
+        />
       )}
       <div className="w-full min-h-full overflow-y-auto p-6 md:p-12">
         <h1 className="relative title text-white text-4xl">{module?.name}</h1>
