@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ModuleEdit } from "../components/ModuleEdit";
 import type { Module } from "../types/module";
 
 export function Module() {
   const [params, setParams] = useSearchParams();
   const [module, setModule] = useState<Module | null>(null);
+  const [modal, setModal] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -29,6 +31,7 @@ export function Module() {
 
   return (
     <>
+      {modal && <ModuleEdit />}
       <div className="w-full min-h-full overflow-y-auto p-6 md:p-12">
         <h1 className="relative title text-white text-4xl">{module?.name}</h1>
         <motion.div
@@ -58,7 +61,10 @@ export function Module() {
           </p>
           <div className="flex items-center gap-3 p-1.5 pl-2 text-white">
             {module?.available && (
-              <button className="hover:text-white hover:bg-emerald-500 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg text-emerald-500 cursor-pointer bg-transparent">
+              <button
+                onClick={() => setModal(true)}
+                className="hover:text-white hover:bg-emerald-500 transition border-2 border-solid border-emerald-500 p-1.5 pl-6 pr-6 rounded-lg text-emerald-500 cursor-pointer bg-transparent"
+              >
                 Edit
               </button>
             )}
