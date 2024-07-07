@@ -10,3 +10,8 @@ export interface ModuleTemperature {
     id: string;
     temperature: number;
 }
+
+export interface HistoricalData {
+    timestamp: string;
+    temperature: number;
+}

@@ -1,8 +1,20 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+} from "recharts";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ModuleEdit } from "../components/ModuleEdit";
-import type { Module, ModuleTemperature } from "../types/module";
+import type {
+  Module,
+  ModuleTemperature,
+  HistoricalData,
+} from "../types/module";
 import { io } from "socket.io-client";
 
 export function Module() {
@@ -10,8 +22,27 @@ export function Module() {
   const [module, setModule] = useState<Module | null>();
   const [temperature, setTemperature] = useState<number | null>(null);
   const [modal, setModal] = useState<boolean>(false);
+  const [history, setHistory] = useState<HistoricalData[]>([]);
 
   const navigate = useNavigate();
+
+  async function showHistoricalData(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const data = new FormData(e.target as HTMLFormElement);
+
+    const startDate = new Date(data.get("start") as string).toISOString();
+    const stopDate = new Date(data.get("stop") as string).toISOString();
+    const mode = data.get("mode");
+
+    await fetch(
+      `http://localhost:3001/modules/${module?.id}/history?start=${startDate}&stop=${stopDate}&mode=${mode}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setHistory(data);
+      });
+  }
 
   useEffect(() => {
     if (!params.get("id")) {
@@ -125,30 +156,53 @@ export function Module() {
             </button>
           </div>
         </motion.div>
-        <form className="mt-6 flex flex-col items-start justify-start gap-2">
-          <h2 className="text-white text-xl">Module History:</h2>
-          <div className="flex-col flex items-start justify-start gap-2 mt-6">
-            <label className="text-white">Start:</label>
-            <input type="datetime-local" required name="start" />
+        {module?.available && (
+          <div className="flex flex-col md:flex-row justify-start md:justify-between w-full">
+            <form
+              onSubmit={showHistoricalData}
+              className="mt-6 flex flex-col items-start justify-start gap-2"
+            >
+              <h2 className="text-white text-xl">Module History:</h2>
+              <div className="flex-col flex items-start justify-start gap-2 mt-4">
+                <label className="text-white">Start:</label>
+                <input type="datetime-local" required name="start" />
+              </div>
+              <div className="flex-col flex items-start justify-start gap-2">
+                <label className="text-white">Stop:</label>
+                <input type="datetime-local" required name="stop" />
+              </div>
+              <div className="flex-col flex items-start justify-start gap-2">
+                <label className="text-white">Mode:</label>
+                <select name="mode" required>
+                  <option>hourly</option>
+                  <option>daily</option>
+                </select>
+              </div>
+              <button
+                className="mt-2 hover:bg-emerald-600 hover:border-emerald-600 transition border-2 border-solid bg-emerald-500 border-emerald-500 p-1 pl-4 pr-4 rounded-lg cursor-pointer text-white"
+                type="submit"
+              >
+                Show History
+              </button>
+            </form>
+            <div className="w-full md:w-[95%] pt-6 h-[12rem] md:h-auto">
+              {history && (
+                <ResponsiveContainer>
+                  <LineChart width={600} height={300} data={history}>
+                    <Line
+                      type="monotone"
+                      dataKey="temperature"
+                      stroke="#8884d8"
+                    />
+                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+                    <XAxis />
+                    <YAxis />
+                  </LineChart>
+                </ResponsiveContainer>
+              )}
+            </div>
           </div>
-          <div className="flex-col flex items-start justify-start gap-2">
-            <label className="text-white">Stop:</label>
-            <input type="datetime-local" required name="stop" />
-          </div>
-          <div className="flex-col flex items-start justify-start gap-2">
-            <label className="text-white">Mode:</label>
-            <select required>
-              <option>hourly</option>
-              <option>daily</option>
-            </select>
-          </div>
-          <button
-            className="mt-2 hover:bg-emerald-600 hover:border-emerald-600 transition border-2 border-solid bg-emerald-500 border-emerald-500 p-1 pl-4 pr-4 rounded-lg cursor-pointer text-white"
-            type="submit"
-          >
-            Show History
-          </button>
-        </form>
+        )}
       </div>
     </>
   );
