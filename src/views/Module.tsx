@@ -6,7 +6,7 @@ import type { Module } from "../types/module";
 
 export function Module() {
   const [params, setParams] = useSearchParams();
-  const [module, setModule] = useState<Module | null>(null);
+  const [module, setModule] = useState<Module | null>();
   const [modal, setModal] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -31,7 +31,9 @@ export function Module() {
 
   return (
     <>
-      {modal && <ModuleEdit />}
+      {modal && module && (
+        <ModuleEdit module={module} close={() => setModal(false)} />
+      )}
       <div className="w-full min-h-full overflow-y-auto p-6 md:p-12">
         <h1 className="relative title text-white text-4xl">{module?.name}</h1>
         <motion.div
