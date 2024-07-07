@@ -5,3 +5,8 @@ export interface Module {
     available: boolean;
     targetTemperature: number;
 }
+
+export interface ModuleTemperature {
+    id: string;
+    temperature: number;
+}

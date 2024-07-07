@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ModuleEdit } from "../components/ModuleEdit";
 import type { Module } from "../types/module";
+import { io } from "socket.io-client";
 
 export function Module() {
   const [params, setParams] = useSearchParams();

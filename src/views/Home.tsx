@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { ModuleCard } from "../components/ModuleCard";
-import type { Module } from "../types/module";
+import { io } from "socket.io-client";
+import type { Module, ModuleTemperature } from "../types/module";
 
 export function Home() {
   const [modules, setModules] = useState<Module[]>([]);
+  const [moduleTemperatures, setModuleTemperatures] = useState<
+    ModuleTemperature[]
+  >([]);
 
   useEffect(() => {
     fetch("http://localhost:3001/modules", { mode: "cors" })
@@ -15,6 +19,14 @@ export function Home() {
         });
         setModules(modulesArray);
       });
+
+    const socket = io("http://localhost:3001", {
+      transports: ["websocket"],
+    });
+
+    socket.on("moduleUpdate", (message) => {
+      setModuleTemperatures(message);
+    });
   }, []);
 
   return (
@@ -22,7 +34,11 @@ export function Home() {
       <h1 className="relative title text-white text-4xl">Modules</h1>
       <div className="overflow-hidden w-full h-auto text-white mt-8 flex flex-col gap-4">
         {modules.map((item) => (
-          <ModuleCard {...item} />
+          <ModuleCard
+            key={item.id}
+            module={{ ...item }}
+            temperature={moduleTemperatures.find((el) => el.id === item.id)}
+          />
         ))}
       </div>
     </div>
