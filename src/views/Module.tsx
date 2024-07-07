@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ModuleEdit } from "../components/ModuleEdit";
-import type { Module } from "../types/module";
+import type { Module, ModuleTemperature } from "../types/module";
 import { io } from "socket.io-client";
 
 export function Module() {
   const [params, setParams] = useSearchParams();
   const [module, setModule] = useState<Module | null>();
+  const [temperature, setTemperature] = useState<number | null>(null);
   const [modal, setModal] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -28,6 +29,23 @@ export function Module() {
           setModule(data);
         });
     }
+
+    const socket = io("http://localhost:3001", {
+      transports: ["websocket"],
+    });
+
+    socket.on("moduleUpdate", (message: ModuleTemperature[]) => {
+      const index = message.findIndex((item) => item.id === params.get("id"));
+      if (index !== -1) {
+        setTemperature(message[index].temperature);
+      } else {
+        setTemperature(null);
+      }
+    });
+
+    return () => {
+      socket.close();
+    };
   }, []);
 
   return (
@@ -59,6 +77,12 @@ export function Module() {
               {module?.targetTemperature} °C
             </span>
           </p>
+          {temperature && (
+            <p className="font-light text-white p-1.5 pl-2">
+              Actual Temparature:{" "}
+              <span className="font-semibold">{temperature} °C</span>
+            </p>
+          )}
           <p
             className={`${
               module?.available ? "text-emerald-500" : "text-red-500"

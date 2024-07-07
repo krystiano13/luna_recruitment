@@ -28,11 +28,11 @@ export const ModuleCard: React.FC<Props> = (props) => {
           </span>
         </p>
 
-        {props.temperature && (
+        {props.module.available && (
           <p className="font-light p-1.5 pl-2">
             Actual Temparature:{" "}
             <span className="font-semibold">
-              {props.temperature.temperature} °C
+              {props.temperature?.temperature} °C
             </span>
           </p>
         )}

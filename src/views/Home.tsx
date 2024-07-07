@@ -27,6 +27,10 @@ export function Home() {
     socket.on("moduleUpdate", (message) => {
       setModuleTemperatures(message);
     });
+
+    return () => {
+      socket.close();
+    }
   }, []);
 
   return (
