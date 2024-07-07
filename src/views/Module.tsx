@@ -80,7 +80,17 @@ export function Module() {
           {temperature && (
             <p className="font-light text-white p-1.5 pl-2">
               Actual Temparature:{" "}
-              <span className="font-semibold">{temperature} °C</span>
+              <span
+                className={`font-semibold ${
+                  temperature &&
+                  module &&
+                  Math.abs(temperature - module.targetTemperature) <= 0.5
+                    ? "text-emerald-500"
+                    : "text-red-500"
+                }`}
+              >
+                {temperature} °C
+              </span>
             </p>
           )}
           <p

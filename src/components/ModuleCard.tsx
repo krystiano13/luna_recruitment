@@ -31,7 +31,17 @@ export const ModuleCard: React.FC<Props> = (props) => {
         {props.module.available && (
           <p className="font-light p-1.5 pl-2">
             Actual Temparature:{" "}
-            <span className="font-semibold">
+            <span
+              className={`font-semibold ${
+                props.temperature?.temperature &&
+                Math.abs(
+                  props.temperature?.temperature -
+                    props.module.targetTemperature
+                ) <= 0.5
+                  ? "text-emerald-500"
+                  : "text-red-500"
+              }`}
+            >
               {props.temperature?.temperature} °C
             </span>
           </p>
