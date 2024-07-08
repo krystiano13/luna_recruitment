@@ -32,6 +32,7 @@ export const ModuleCard: React.FC<Props> = (props) => {
           <p className="font-light p-1.5 pl-2">
             Actual Temparature:{" "}
             <span
+              id="actual_temp"
               className={`font-semibold ${
                 props.temperature?.temperature &&
                 Math.abs(
