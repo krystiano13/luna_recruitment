@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-} from "recharts";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ModuleEdit } from "../components/ModuleEdit";
+import { HistoryChart } from "../components/HistoryChart";
 import type {
   Module,
   ModuleTemperature,
@@ -187,18 +180,7 @@ export function Module() {
             </form>
             <div className="w-full md:w-[95%] pt-6 h-[12rem] md:h-auto">
               {history && (
-                <ResponsiveContainer>
-                  <LineChart width={600} height={300} data={history}>
-                    <Line
-                      type="monotone"
-                      dataKey="temperature"
-                      stroke="#8884d8"
-                    />
-                    <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-                    <XAxis />
-                    <YAxis />
-                  </LineChart>
-                </ResponsiveContainer>
+                <HistoryChart history={history} />
               )}
             </div>
           </div>
