@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ModuleEdit } from "../components/ModuleEdit";
 import { HistoryChart } from "../components/HistoryChart";
 import { HistoryForm } from "../components/HistoryForm";
+import { ModuleTemperature as ModuleTemp } from "../components/ModuleTemperature";
 import type {
   Module,
   ModuleTemperature,
@@ -103,20 +104,7 @@ export function Module() {
             </span>
           </p>
           {temperature && (
-            <p className="font-light text-white p-1.5 pl-2">
-              Actual Temparature:{" "}
-              <span
-                className={`font-semibold ${
-                  temperature &&
-                  module &&
-                  Math.abs(temperature - module.targetTemperature) <= 0.5
-                    ? "text-emerald-500"
-                    : "text-red-500"
-                }`}
-              >
-                {temperature} °C
-              </span>
-            </p>
+            <ModuleTemp module={module as Module} temperature={temperature} />
           )}
           <p
             className={`${
