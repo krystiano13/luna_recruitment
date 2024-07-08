@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ModuleEdit } from "../components/ModuleEdit";
 import { HistoryChart } from "../components/HistoryChart";
+import { HistoryForm } from "../components/HistoryForm";
 import type {
   Module,
   ModuleTemperature,
@@ -151,37 +152,9 @@ export function Module() {
         </motion.div>
         {module?.available && (
           <div className="flex flex-col md:flex-row justify-start md:justify-between w-full">
-            <form
-              onSubmit={showHistoricalData}
-              className="mt-6 flex flex-col items-start justify-start gap-2"
-            >
-              <h2 className="text-white text-xl">Module History:</h2>
-              <div className="flex-col flex items-start justify-start gap-2 mt-4">
-                <label className="text-white">Start:</label>
-                <input type="datetime-local" required name="start" />
-              </div>
-              <div className="flex-col flex items-start justify-start gap-2">
-                <label className="text-white">Stop:</label>
-                <input type="datetime-local" required name="stop" />
-              </div>
-              <div className="flex-col flex items-start justify-start gap-2">
-                <label className="text-white">Mode:</label>
-                <select name="mode" required>
-                  <option>hourly</option>
-                  <option>daily</option>
-                </select>
-              </div>
-              <button
-                className="mt-2 hover:bg-emerald-600 hover:border-emerald-600 transition border-2 border-solid bg-emerald-500 border-emerald-500 p-1 pl-4 pr-4 rounded-lg cursor-pointer text-white"
-                type="submit"
-              >
-                Show History
-              </button>
-            </form>
+            <HistoryForm submit={showHistoricalData} />
             <div className="w-full md:w-[95%] pt-6 h-[12rem] md:h-auto">
-              {history && (
-                <HistoryChart history={history} />
-              )}
+              {history && <HistoryChart history={history} />}
             </div>
           </div>
         )}
