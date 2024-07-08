@@ -12,6 +12,8 @@ The project was created as part of the recruitment process at Luna Scientific. T
 - Recharts
 - TailwindCSS
 - React-Router
+- Vitest
+- React Testing Library
 
 ## Project Setup
 
